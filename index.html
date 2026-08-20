@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#fff7fb" />
+  <title>メル MakeUp AI Ver.1.0</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">🌸 MERU BEAUTY LAB</div>
+        <h1>メル MakeUp AI <span>Ver.1.0</span></h1>
+        <p>今日の肌とメイクを、メルと一緒に育てるにゃん🐾</p>
+      </div>
+      <button class="icon-btn" id="openSettings" aria-label="設定">⚙️</button>
+    </header>
+
+    <main>
+      <section class="page active" data-page="home">
+        <div class="hero-card card">
+          <div class="meru-avatar">🐱</div>
+          <div>
+            <div class="small-label">今日のメル</div>
+            <h2 id="heroGreeting">今日はどんなメイクにするにゃん？</h2>
+            <p class="muted">肌の状態・予定・手持ちコスメ・好きな雰囲気をまとめて考えるよ。</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <div>
+              <div class="small-label">TODAY'S MODE</div>
+              <h2>今日の予定</h2>
+            </div>
+            <span class="pill" id="currentModePill">💼 仕事</span>
+          </div>
+          <div class="chip-grid" id="modeChips">
+            <button class="chip active" data-mode="仕事" data-icon="💼">💼 仕事</button>
+            <button class="chip" data-mode="デート" data-icon="💗">💗 デート</button>
+            <button class="chip" data-mode="おでかけ" data-icon="🎀">🎀 おでかけ</button>
+            <button class="chip" data-mode="ライブ・フェス" data-icon="🎤">🎤 ライブ</button>
+            <button class="chip" data-mode="盛りたい" data-icon="✨">✨ 盛りたい</button>
+            <button class="chip" data-mode="コスプレ" data-icon="🎭">🎭 コスプレ</button>
+          </div>
+          <div class="form-grid two">
+            <label>外出予定時間
+              <select id="hoursOut">
+                <option value="2">〜2時間</option>
+                <option value="5">3〜5時間</option>
+                <option value="8" selected>6〜8時間</option>
+                <option value="12">9〜12時間</option>
+                <option value="14">12時間以上</option>
+              </select>
+            </label>
+            <label>今日の優先
+              <select id="todayPriority">
+                <option>崩れにくさ</option>
+                <option>盛れ感</option>
+                <option>ナチュラル</option>
+                <option>写真映え</option>
+                <option>肌負担少なめ</option>
+              </select>
+            </label>
+          </div>
+          <button class="primary wide" data-go="diagnose">📷 今日の顔・メイクを診断</button>
+        </div>
+
+        <div class="level-card card">
+          <div class="level-row">
+            <div>
+              <div class="small-label">BEAUTY LEVEL</div>
+              <h3>Lv.<span id="levelNum">1</span> 💄 メイク研究員</h3>
+            </div>
+            <strong><span id="expText">0 / 100</span> EXP</strong>
+          </div>
+          <div class="progress"><div id="expBar"></div></div>
+          <div class="mission-row">
+            <span>🔥 連続 <b id="streak">0</b>日</span>
+            <span>📷 記録 <b id="recordCount">0</b>回</span>
+            <span>🐾 メルPt <b id="meruPt">0</b>pt</span>
+          </div>
+        </div>
+
+        <section class="quick">
+          <div class="section-head"><h2>クイックメニュー</h2></div>
+          <div class="quick-grid">
+            <button class="quick-btn" data-go="diagnose"><span>📷</span><b>メイク診断</b><small>今日の仕上がり</small></button>
+            <button class="quick-btn" data-go="compare"><span>🌙</span><b>崩れ比較</b><small>朝 ↔ 帰宅後</small></button>
+            <button class="quick-btn" data-go="skin"><span>🫧</span><b>肌コンディション</b><small>すっぴん・ケア</small></button>
+            <button class="quick-btn" data-go="cosmetics"><span>💄</span><b>手持ちコスメ</b><small>ポーチを登録</small></button>
+            <button class="quick-btn" data-go="ideal"><span>🎀</span><b>理想メイク</b><small>好きな顔を登録</small></button>
+            <button class="quick-btn" data-go="cosplay"><span>🎭</span><b>コスプレ</b><small>キャラに寄せる</small></button>
+          </div>
+        </section>
+
+        <div class="card">
+          <div class="section-head">
+            <div><div class="small-label">MERU'S ADVICE</div><h2>🐾 メルからのアドバイス</h2></div>
+          </div>
+          <p id="meruAdvice">まずは「今日の予定」を選んで、朝の肌か完成メイクを1枚残してみるにゃん♪</p>
+        </div>
+      </section>
+
+      <section class="page" data-page="diagnose">
+        <div class="page-title"><div><div class="small-label">MAKEUP CHECK</div><h2>📷 今日のメイク診断</h2></div></div>
+        <div class="card">
+          <p class="hint">正面・自然光・加工なしがおすすめ。同じ場所で撮ると比較しやすいよ。</p>
+          <div class="upload-box">
+            <input type="file" id="makeupPhoto" accept="image/*" capture="user" hidden>
+            <button class="upload-trigger" data-input="makeupPhoto">＋ 完成メイク写真を追加</button>
+            <img id="makeupPreview" class="preview hidden" alt="完成メイク">
+          </div>
+          <div class="form-grid two">
+            <label>自分の満足度
+              <select id="selfScore">
+                <option value="5">★★★★★ かなり盛れた</option>
+                <option value="4">★★★★☆ いい感じ</option>
+                <option value="3" selected>★★★☆☆ 普通</option>
+                <option value="2">★★☆☆☆ いまいち</option>
+                <option value="1">★☆☆☆☆ 失敗気味</option>
+              </select>
+            </label>
+            <label>仕上げ時間
+              <input id="finishTime" type="time">
+            </label>
+          </div>
+          <label>気になるところ（任意）
+            <textarea id="makeupConcern" placeholder="例：鼻が粉っぽい、眉が濃い気がする、涙袋がうまくいかない"></textarea>
+          </label>
+          <button class="primary wide analyze-btn" data-analysis="makeup">✨ メルに分析してもらう</button>
+        </div>
+        <div id="makeupResult" class="result-card card hidden"></div>
+      </section>
+
+      <section class="page" data-page="compare">
+        <div class="page-title"><div><div class="small-label">KEEP CHECK</div><h2>🌙 朝 ↔ 帰宅後 崩れ分析</h2></div></div>
+        <div class="card">
+          <div class="compare-grid">
+            <div class="photo-slot">
+              <b>☀️ メイク仕立て</b>
+              <input type="file" id="morningPhoto" accept="image/*" capture="user" hidden>
+              <button class="upload-trigger" data-input="morningPhoto">＋ 朝の写真</button>
+              <img id="morningPreview" class="preview hidden" alt="朝">
+            </div>
+            <div class="photo-slot">
+              <b>🌙 帰宅後</b>
+              <input type="file" id="eveningPhoto" accept="image/*" capture="user" hidden>
+              <button class="upload-trigger" data-input="eveningPhoto">＋ 帰宅後の写真</button>
+              <img id="eveningPreview" class="preview hidden" alt="帰宅後">
+            </div>
+          </div>
+          <div class="form-grid two">
+            <label>外出時間
+              <select id="compareHours">
+                <option value="2">〜2時間</option>
+                <option value="5">3〜5時間</option>
+                <option value="8" selected>6〜8時間</option>
+                <option value="12">9〜12時間</option>
+                <option value="14">12時間以上</option>
+              </select>
+            </label>
+            <label>途中のお直し
+              <select id="touchup">
+                <option>していない</option>
+                <option>1回</option>
+                <option>2回</option>
+                <option>3回以上</option>
+              </select>
+            </label>
+          </div>
+          <label>自分で気づいた崩れ
+            <textarea id="collapseMemo" placeholder="例：鼻だけテカった、目尻が落ちた、口周りが乾燥した"></textarea>
+          </label>
+          <button class="primary wide analyze-btn" data-analysis="compare">🔎 2枚を比較して改善点を見る</button>
+        </div>
+        <div id="compareResult" class="result-card card hidden"></div>
+      </section>
+
+      <section class="page" data-page="skin">
+        <div class="page-title"><div><div class="small-label">SKIN CONDITION</div><h2>🫧 今日の肌コンディション</h2></div></div>
+        <div class="card">
+          <div class="upload-box">
+            <input type="file" id="skinPhoto" accept="image/*" capture="user" hidden>
+            <button class="upload-trigger" data-input="skinPhoto">＋ すっぴん写真を追加</button>
+            <img id="skinPreview" class="preview hidden" alt="肌">
+          </div>
+          <div class="chip-grid compact" id="skinGoals">
+            <button class="chip active">全体を整えたい</button>
+            <button class="chip">乾燥</button><button class="chip">テカリ</button>
+            <button class="chip">毛穴</button><button class="chip">透明感</button>
+            <button class="chip">赤み</button><button class="chip">メイクのり</button>
+          </div>
+          <div class="form-grid two">
+            <label>睡眠
+              <select id="sleepHours"><option>5時間未満</option><option>5〜6時間</option><option selected>6〜7時間</option><option>7〜8時間</option><option>8時間以上</option></select>
+            </label>
+            <label>今日の体感
+              <select id="skinFeel"><option>乾燥する</option><option>普通</option><option>テカる</option><option>部分的に乾燥・テカリ</option><option>敏感っぽい</option></select>
+            </label>
+          </div>
+          <label>今日気になること
+            <textarea id="skinMemo" placeholder="例：頬がカサつく、鼻の毛穴が気になる"></textarea>
+          </label>
+          <button class="primary wide analyze-btn" data-analysis="skin">🫧 肌と今日のケアを考える</button>
+        </div>
+        <div id="skinResult" class="result-card card hidden"></div>
+        <div class="notice">※ 写真から病気の診断はしません。美容目的の見た目の傾向と、本人が入力した体感をもとにアドバイスします。</div>
+      </section>
+
+      <section class="page" data-page="cosmetics">
+        <div class="page-title"><div><div class="small-label">MY COSMETICS</div><h2>💄 手持ちコスメ</h2></div><button class="secondary" id="addCosmetic">＋追加</button></div>
+        <div class="card">
+          <div class="upload-box mini">
+            <input type="file" id="cosmeticPhoto" accept="image/*" multiple hidden>
+            <button class="upload-trigger" data-input="cosmeticPhoto">📷 ポーチ・コスメ写真を登録</button>
+            <small>複数枚OK。商品名はあとから確認・修正する前提の設計です。</small>
+          </div>
+        </div>
+        <div id="cosmeticList" class="list-stack"></div>
+      </section>
+
+      <section class="page" data-page="ideal">
+        <div class="page-title"><div><div class="small-label">MY IDEAL</div><h2>🎀 理想の顔・メイク</h2></div></div>
+        <div class="card">
+          <p class="hint">好きな写真を最大10枚。どこが好きかも一緒に残せるよ。</p>
+          <input type="file" id="idealPhoto" accept="image/*" multiple hidden>
+          <button class="upload-trigger wide" data-input="idealPhoto">＋ 理想写真を追加</button>
+          <div id="idealGallery" class="gallery"></div>
+        </div>
+        <div class="card">
+          <label>理想メイクメモ
+            <textarea id="idealMemo" placeholder="例：目元は丸く、ピンク系、涙袋しっかり。肌はツヤすぎない透明感。"></textarea>
+          </label>
+          <button class="primary wide analyze-btn" data-analysis="ideal">🎀 好みの傾向をまとめる</button>
+        </div>
+        <div id="idealResult" class="result-card card hidden"></div>
+      </section>
+
+      <section class="page" data-page="cosplay">
+        <div class="page-title"><div><div class="small-label">COSPLAY MODE</div><h2>🎭 コスプレメイク</h2></div></div>
+        <div class="card">
+          <div class="compare-grid">
+            <div class="photo-slot">
+              <b>🎭 キャラクター</b>
+              <input type="file" id="characterPhoto" accept="image/*" hidden>
+              <button class="upload-trigger" data-input="characterPhoto">＋ キャラ画像</button>
+              <img id="characterPreview" class="preview hidden" alt="キャラクター">
+            </div>
+            <div class="photo-slot">
+              <b>🪞 自分</b>
+              <input type="file" id="cosplaySelfPhoto" accept="image/*" capture="user" hidden>
+              <button class="upload-trigger" data-input="cosplaySelfPhoto">＋ 自分の写真</button>
+              <img id="cosplaySelfPreview" class="preview hidden" alt="自分">
+            </div>
+          </div>
+          <label>寄せ方
+            <select id="cosplayStyle">
+              <option>現実で盛れる</option><option>原作忠実</option><option>写真映え重視</option><option>イベント向け</option><option>普段でもできるキャラ風</option>
+            </select>
+          </label>
+          <label>キャラ名・希望
+            <textarea id="cosplayMemo" placeholder="例：○○。目元と眉を特に寄せたい。カラコン・ウィッグも提案してほしい。"></textarea>
+          </label>
+          <button class="primary wide analyze-btn" data-analysis="cosplay">✨ コスプレメイク案を作る</button>
+        </div>
+        <div id="cosplayResult" class="result-card card hidden"></div>
+      </section>
+
+      <section class="page" data-page="records">
+        <div class="page-title"><div><div class="small-label">BEAUTY LOG</div><h2>📊 メイク・肌 記録</h2></div></div>
+        <div id="recordList" class="list-stack"></div>
+      </section>
+
+      <section class="page" data-page="backup">
+        <div class="page-title"><div><div class="small-label">DATA</div><h2>💾 バックアップ</h2></div></div>
+        <div class="card">
+          <h3>JSONバックアップ</h3>
+          <p class="muted">設定・コスメ・診断履歴を書き出せます。写真を含める場合はファイルサイズが大きくなります。</p>
+          <label class="toggle-line"><input type="checkbox" id="includeImages"> 写真も含める</label>
+          <div class="button-row">
+            <button class="primary" id="exportBackup">バックアップを書き出す</button>
+            <label class="secondary file-label">復元<input type="file" id="importBackup" accept=".json,application/json" hidden></label>
+          </div>
+          <button class="danger ghost wide" id="clearAll">端末内データをすべて削除</button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-go="home"><span>🏠</span><small>ホーム</small></button>
+      <button class="nav-btn" data-go="diagnose"><span>📷</span><small>診断</small></button>
+      <button class="nav-btn" data-go="skin"><span>🫧</span><small>肌</small></button>
+      <button class="nav-btn" data-go="records"><span>📊</span><small>記録</small></button>
+      <button class="nav-btn" data-go="backup"><span>💾</span><small>データ</small></button>
+    </nav>
+  </div>
+
+  <dialog id="cosmeticDialog">
+    <form method="dialog" id="cosmeticForm">
+      <div class="dialog-head"><h3>💄 コスメを追加</h3><button value="cancel" class="icon-btn">✕</button></div>
+      <label>カテゴリ
+        <select id="cCategory"><option>下地</option><option>ファンデーション</option><option>コンシーラー</option><option>パウダー</option><option>アイシャドウ</option><option>アイライナー</option><option>マスカラ</option><option>アイブロウ</option><option>チーク</option><option>ハイライト</option><option>シェーディング</option><option>リップ</option><option>カラコン</option><option>スキンケア</option><option>その他</option></select>
+      </label>
+      <label>ブランド<input id="cBrand" placeholder="例：CLIO"></label>
+      <label>商品名<input id="cName" placeholder="例：プロ アイ パレット"></label>
+      <label>カラー・番号<input id="cColor" placeholder="例：02 / ピンクブラウン"></label>
+      <label>メモ<input id="cMemo" placeholder="例：仕事の日によく使う"></label>
+      <button class="primary wide" value="default" id="saveCosmetic">保存</button>
+    </form>
+  </dialog>
+
+  <dialog id="settingsDialog">
+    <form method="dialog">
+      <div class="dialog-head"><h3>⚙️ 設定</h3><button value="cancel" class="icon-btn">✕</button></div>
+      <label>AI連携エンドポイント（任意）
+        <input id="apiEndpoint" placeholder="例：https://example.com/api/analyze">
+      </label>
+      <p class="notice">GitHub PagesにAPIキーを直接置くのは危険です。AI連携はAPIキーを隠せるサーバー側エンドポイントを指定してください。</p>
+      <button class="primary wide" id="saveSettings" value="default">保存</button>
+    </form>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
