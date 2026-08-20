@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#fff7fb" />
-  <title>メル MakeUp AI Ver.1.0</title>
+  <title>メル MakeUp AI Ver.1.1</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
     <header class="topbar">
       <div>
         <div class="eyebrow">🌸 MERU BEAUTY LAB</div>
-        <h1>メル MakeUp AI <span>Ver.1.0</span></h1>
+        <h1>メル MakeUp AI <span>Ver.1.1</span></h1>
         <p>今日の肌とメイクを、メルと一緒に育てるにゃん🐾</p>
       </div>
       <button class="icon-btn" id="openSettings" aria-label="設定">⚙️</button>
@@ -21,7 +21,7 @@
     <main>
       <section class="page active" data-page="home">
         <div class="hero-card card">
-          <div class="meru-avatar">🐱</div>
+          <img class="meru-avatar-img" src="assets/home.jpg" alt="メル">
           <div>
             <div class="small-label">今日のメル</div>
             <h2 id="heroGreeting">今日はどんなメイクにするにゃん？</h2>
@@ -72,11 +72,18 @@
           <div class="level-row">
             <div>
               <div class="small-label">BEAUTY LEVEL</div>
-              <h3>Lv.<span id="levelNum">1</span> 💄 メイク研究員</h3>
+              <h3>Lv.<span id="levelNum">1</span> ⭐ メルビューティーコーチ</h3>
+              <strong><span id="expText">0 / 100</span> EXP</strong>
             </div>
-            <strong><span id="expText">0 / 100</span> EXP</strong>
+            <img class="level-meru" src="assets/level.jpg" alt="レベルアップするメル">
           </div>
           <div class="progress"><div id="expBar"></div></div>
+          <h3 class="mission-title">今日のミッション</h3>
+          <div class="mission-list">
+            <div class="mission-item"><span class="mission-check"></span><span>今日のメイクを記録</span><b>+10EXP</b></div>
+            <div class="mission-item"><span class="mission-check"></span><span>肌コンディションを記録</span><b>+10EXP</b></div>
+            <div class="mission-item"><span class="mission-check"></span><span>朝と帰宅後を比較</span><b>+20EXP</b></div>
+          </div>
           <div class="mission-row">
             <span>🔥 連続 <b id="streak">0</b>日</span>
             <span>📷 記録 <b id="recordCount">0</b>回</span>
@@ -87,20 +94,18 @@
         <section class="quick">
           <div class="section-head"><h2>クイックメニュー</h2></div>
           <div class="quick-grid">
-            <button class="quick-btn" data-go="diagnose"><span>📷</span><b>メイク診断</b><small>今日の仕上がり</small></button>
-            <button class="quick-btn" data-go="compare"><span>🌙</span><b>崩れ比較</b><small>朝 ↔ 帰宅後</small></button>
-            <button class="quick-btn" data-go="skin"><span>🫧</span><b>肌コンディション</b><small>すっぴん・ケア</small></button>
-            <button class="quick-btn" data-go="cosmetics"><span>💄</span><b>手持ちコスメ</b><small>ポーチを登録</small></button>
-            <button class="quick-btn" data-go="ideal"><span>🎀</span><b>理想メイク</b><small>好きな顔を登録</small></button>
-            <button class="quick-btn" data-go="cosplay"><span>🎭</span><b>コスプレ</b><small>キャラに寄せる</small></button>
+            <button class="quick-btn q-pink" data-go="diagnose"><img src="assets/book.jpg"><b>メイク診断</b><small>今日の仕上がり</small></button>
+            <button class="quick-btn q-blue" data-go="compare"><img src="assets/note.jpg"><b>崩れ比較</b><small>朝 ↔ 帰宅後</small></button>
+            <button class="quick-btn q-mint" data-go="skin"><img src="assets/loupe.jpg"><b>肌コンディション</b><small>すっぴん・ケア</small></button>
+            <button class="quick-btn q-lav" data-go="cosmetics"><img src="assets/heart.jpg"><b>手持ちコスメ</b><small>ポーチを登録</small></button>
+            <button class="quick-btn q-yellow" data-go="ideal"><img src="assets/calendar.jpg"><b>理想メイク</b><small>好きな顔を登録</small></button>
+            <button class="quick-btn q-green" data-go="cosplay"><img src="assets/grad.jpg"><b>コスプレ</b><small>キャラに寄せる</small></button>
           </div>
         </section>
 
-        <div class="card">
-          <div class="section-head">
-            <div><div class="small-label">MERU'S ADVICE</div><h2>🐾 メルからのアドバイス</h2></div>
-          </div>
-          <p id="meruAdvice">まずは「今日の予定」を選んで、朝の肌か完成メイクを1枚残してみるにゃん♪</p>
+        <div class="card meru-advice-card">
+          <div class="speech-bubble"><div class="small-label">MERU'S ADVICE</div><p id="meruAdvice">まずは「今日の予定」を選んで、朝の肌か完成メイクを1枚残してみるにゃん♪</p></div>
+          <img src="assets/megaphone.jpg" alt="応援するメル">
         </div>
       </section>
 
@@ -290,11 +295,11 @@
     </main>
 
     <nav class="bottom-nav">
-      <button class="nav-btn active" data-go="home"><span>🏠</span><small>ホーム</small></button>
-      <button class="nav-btn" data-go="diagnose"><span>📷</span><small>診断</small></button>
-      <button class="nav-btn" data-go="skin"><span>🫧</span><small>肌</small></button>
-      <button class="nav-btn" data-go="records"><span>📊</span><small>記録</small></button>
-      <button class="nav-btn" data-go="backup"><span>💾</span><small>データ</small></button>
+      <button class="nav-btn active" data-go="home"><img src="assets/home.jpg"><small>ホーム</small></button>
+      <button class="nav-btn" data-go="diagnose"><img src="assets/book.jpg"><small>メイク</small></button>
+      <button class="nav-btn" data-go="skin"><img src="assets/loupe.jpg"><small>肌</small></button>
+      <button class="nav-btn" data-go="records"><img src="assets/calendar.jpg"><small>記録</small></button>
+      <button class="nav-btn" data-go="backup"><img src="assets/note.jpg"><small>データ</small></button>
     </nav>
   </div>
 
