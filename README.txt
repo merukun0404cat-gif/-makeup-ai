@@ -1,0 +1,1 @@
+メル MakeUp AI 星空版 Ver.2.0\nGitHub Pagesでは index.html だけ上書きしてください。画像はHTML内に埋め込み済みです。\n※現在の採点はデモロジック。実画像AI解析にはサーバー側AI接続が必要です。
