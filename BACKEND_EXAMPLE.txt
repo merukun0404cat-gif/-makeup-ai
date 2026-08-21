@@ -1,0 +1,16 @@
+// Example server-side endpoint (Node/Express-style pseudocode)
+// Keep OPENAI_API_KEY on the server. Never put it in index.html or GitHub Pages.
+//
+// POST /api/makeup-image
+// body: { prompt, kind, mode, skin, cycle, cosmetics }
+//
+// Implement this endpoint with the current OpenAI Image API/SDK.
+// Return ONE of:
+//   { "image_url": "https://..." }
+// or
+//   { "b64_json": "<base64 PNG/JPEG>" }
+//
+// Recommended environment variable:
+// OPENAI_API_KEY=...
+//
+// The frontend is already wired to this JSON contract.
